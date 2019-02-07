@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Mosi GJB</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="js/bootstrap.min.css">
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <style type="text/css" src="js/style.css"></style>
+  <style>
+		#circle {border-radius: 50%; height:30px; width: 30px; cursor: pointer}
+  </style>
+	<script src="js/hc.js"></script>
+	<script src="js/exporting.js"></script>
+	<script src="js/export-data.js"></script>
+	<script type="text/javascript">
+		var kesamping=[];
+		var hasil=[];
+		var kecepatan=[];
+		var percepatan=[];
+		var tinggi=0;
+		var waktu=0;
+		function hitungtinggi(t){
+			return t*t*9.8*0.5;
+		}
+		function jalan(){
+			while(tinggi-hitungtinggi(waktu)>=0){
+				percepatan.push(9.8);
+				hasil.push(tinggi-hitungtinggi(waktu));
+				kecepatan.push(9.8*waktu);
+				kesamping.push(waktu.toFixed(2));
+				waktu+=0.1;
+			}
+			write();
+		}
+		function settime(t){
+			var time=0;
+			var x=setInterval(function() {
+			  if (time >= Math.sqrt(2*t/9.8)) {
+				document.getElementById("time").innerHTML = Math.sqrt(2*t/9.8).toFixed(2) + "s ";
+			    clearInterval(x);
+			  }
+			  document.getElementById("time").innerHTML = time.toFixed(2) + "s ";
+			  time=time+0.05;
+			}, 1);
+		}
+		function mulai(){
+			document.getElementById("circle").style.transform = 'translateY(0)';
+			document.getElementById("circle").style.transition = 'all 0s ease';
+			tinggi=document.getElementById('tinggi').value;
+			document.getElementById('tinggi').value="";
+			kesamping=[];
+			hasil=[];
+			kecepatan=[];
+			percepatan=[];
+			waktu=0;
+			jalan();
+			settime(tinggi);
+			document.getElementById("circle").style.transform = 'translateY(250px)';
+			document.getElementById("circle").style.transition = 'all 2s ease';
+		}
+	</script>
+</head>
+<body>
+<div class="container-fluid">
+  <div class="row">
+  	<div class="col-sm-6" id="anymasi" style="min-width: 310px; height: 400px; margin: 0 auto; text-align: center;">
+  		<div class="row">
+	  		<form class="form-inline" style="margin-top: 10px" action="#">
+			  <div class="form-group">
+			    <tspan for="tinggi" style="box-sizing: border-box; white-space: inherit; font-size: 18px; fill: #333333; color: #333333">Masukan Tinggi Benda =</tspan>
+			    <input type="text" class="form-control" id="tinggi">
+			    <button type="button" class="btn btn-primary" onclick="mulai()">start</button>
+			  </div>
+			</form>
+		</div>
+		<div class="row" style="padding-top: 20px">
+			<div class="col-sm-8" style="text-align: center; height: 300px;">
+				<button class="bg-primary" id="circle" style="align-self: center;"></button>
+			</div>
+			<div class="col-sm-4" style="padding-top: 120px">
+				waktu <font id="time">0.00s</font>
+			</div>
+		</div>
+  	</div>
+	<div class="col-sm-6" id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+  </div>
+  <div class="row">
+	<div class="col-sm-6" id="velocity" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+	<div class="col-sm-6" id="percepatan" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+  </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="js/js.js"></script>
